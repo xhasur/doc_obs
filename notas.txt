@@ -1,0 +1,107 @@
+###
+##Rx: libreria para rear programas asincronos  y basado en eventos medianto el uso de secuencias observables
+   
+    #Observable: Representa una colección invocable de valores o eventos futuros.   
+    #Observer: Es una colección de callbacks q escuchar los valores entregados por el Observable.
+    #Subscription: Representa la ejecución de un Observable.
+    #Subjects: Es el equivalente a un EventEmitter, y la única forma de multi-difundir un valor o evento 
+            a varios observers.
+
+
+
+
+
+--
+Operados SCAN
+valor que tiene el scan...
+funciona igual que ele  reduce.. el valor es lo que devuelve la funcion..
+
+el .map te devuelve un nuevo vector
+
+
+throttleTime: emitir un valor  y en el caso de no haberse cumplido.. no ejecuta 
+              Emite un valor en la llamada del Observable, luego ignora la llamada subsiguiente ( si no cumple con los milisegundos).
+
+
+
+OBSERVABLES:
+
+
+
+-susbscribirse  aun obsrvvble es como llamar una funcion
+-observer no esta registrado com listener
+-observable no contiene una lista de observadores..
+eror y complete solo ocurren una vez
+
+
+subscription tiene la ejecucion de un observable
+
+
+subject permite que los valores sean mulicast a muchos obervers
+mientras que los simples son unicast (solo una salida)
+
+
+subject es observable
+
+
+-Un “multicasted Observable” utiliza un Subject “bajo el capó” para hacer
+ que varios Observers vean la misma ejecución de un Observable.
+
+
+
+OBSERVABLES V6
+
+The following operator names were changed because their dot-chained names are reserved words in JavaScript:
+              
+
+    do -> tap
+    catch -> catchError
+    switch -> switchAll
+    finally -> finalize
+
+
+
+For example, the following code uses chaining:
+
+source
+ .map(x => x + x)
+ .mergeMap(n => of(n + 1, n + 2)
+   .filter(x => x % 1 == 0)
+   .scan((acc, x) => acc + x, 0)
+ )
+ .catch(err => of('error found'))
+ .subscribe(printResult);
+
+To convert to piping:
+
+source.pipe(
+ map(x => x + x),
+ mergeMap(n => of(n + 1, n + 2).pipe(
+   filter(x => x % 1 == 0),
+   scan((acc, x) => acc + x, 0),
+ )),
+ catchError(err => of('error found')),
+).subscribe(printResult); 
+
+
+
+
+/*
+
+return this.gqlClient.executeQuery$(query).pipe(            
+    retryWhen(errors => errors.pipe(
+        tap(error => console.log(`startConversation$ Error: ${JSON.stringify(error)}`)),
+        mergeMap(error => {
+            switch (error.message.code) {
+                case 18010: return this.publishBusinessCreation$();
+                case 18011: return this.publishBusinessActivation$();
+                case 18012: return this.publishWalletCreation$();
+                case 18013: return this.publishWalletSpendingAllowed$();
+            }
+        }),
+        delay(1000)
+    )),            
+    map( ({startCivicaCardReloadConversation}) =>  startCivicaCardReloadConversation)
+);
+
+*/
